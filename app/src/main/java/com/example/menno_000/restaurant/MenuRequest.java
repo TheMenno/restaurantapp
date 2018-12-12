@@ -1,7 +1,9 @@
 package com.example.menno_000.restaurant;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -18,10 +20,10 @@ import java.util.ArrayList;
 public class MenuRequest implements Response.Listener<JSONObject>, Response.ErrorListener {
 
     Context context;
-    MenuRequest.Callback active;
+    Callback active;
 
     public interface Callback {
-        void gotMenu(ArrayList<MenuItem> categories);
+        void gotMenu(ArrayList<MenuItem> menuItems);
         void gotMenuError(String message);
     }
 
@@ -29,7 +31,7 @@ public class MenuRequest implements Response.Listener<JSONObject>, Response.Erro
         this.context = context;
     }
 
-    void getMenu(MenuRequest.Callback activity) {
+    void getMenu(Callback activity) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -47,11 +49,12 @@ public class MenuRequest implements Response.Listener<JSONObject>, Response.Erro
 
     @Override
     public void onResponse(JSONObject response) {
-        try {
-            JSONArray raw_menu = response.getJSONArray("menu");
-            ArrayList<MenuItem> menus = new ArrayList<>();
 
-            String chosen_category = MenuActivity.chosen_category;
+        String chosen_category = MenuActivity.chosen_category;
+
+        try {
+            JSONArray raw_menu = response.getJSONArray("items");
+            ArrayList<MenuItem> menus = new ArrayList<>();
 
             for (int i = 0; i < raw_menu.length(); i++) {
                 JSONObject menu = raw_menu.getJSONObject(i);
@@ -61,7 +64,7 @@ public class MenuRequest implements Response.Listener<JSONObject>, Response.Erro
                     String description = menu.getString("description");
                     String imageurl = menu.getString("image_url");
                     Integer price = menu.getInt("price");
-                    String category = menu.getString("category");
+                    String category = chosen_category;
 
                     MenuItem menuItem = new MenuItem(name, description, imageurl, price, category);
                     menus.add(menuItem);

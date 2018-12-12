@@ -19,11 +19,8 @@ import java.util.List;
 
 public class MenuItemAdapter extends ArrayAdapter<MenuItem> {
 
-    Context context;
+    public Context context;
     ArrayList item_list;
-
-    TextView name;
-    ImageView image;
 
     public MenuItemAdapter(Context context, ArrayList<MenuItem> menuItems) {
         super(context,0 ,menuItems);
@@ -31,24 +28,31 @@ public class MenuItemAdapter extends ArrayAdapter<MenuItem> {
         this.item_list = menuItems;
     }
 
-    @Override
-    public View getView(int i, View v, @NonNull ViewGroup p){
-        MenuItem item = getItem(i);
+    TextView nameView;
+    ImageView imageView;
 
-        if(v == null){
-            v = LayoutInflater.from(getContext()).inflate(R.layout.menu_item, p, false);
+    @Override
+    public View getView(int position, View convertView, @NonNull ViewGroup parent){
+
+        if(convertView == null){
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.menu_item, parent,
+                    false);
         }
 
-        name = v.findViewById(R.id.title);
-        name.setText(item.getName());
+        MenuItem item = getItem(position);
 
-        image = v.findViewById(R.id.image);
-        try {
+        nameView = convertView.findViewById(R.id.name);
+        imageView = convertView.findViewById(R.id.image);
+
+        String name = item.getName();
+        nameView.setText(name);
+
+        /*try {
             URL url = new URL(item.getImageurl());
 
             try {
                 Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                image.setImageBitmap(bmp);
+                imageView.setImageBitmap(bmp);
             } catch (java.io.IOException e) {
                 e.printStackTrace();
             }
@@ -56,7 +60,8 @@ public class MenuItemAdapter extends ArrayAdapter<MenuItem> {
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        }
-        return v;
+        }*/
+
+        return convertView;
     };
 }

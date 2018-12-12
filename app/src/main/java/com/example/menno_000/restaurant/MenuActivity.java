@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class MenuActivity extends AppCompatActivity implements MenuRequest.Callback {
 
     ListView menu_list;
+    MenuItem selected_menu;
     static String chosen_category;
 
     @Override
@@ -33,11 +34,19 @@ public class MenuActivity extends AppCompatActivity implements MenuRequest.Callb
     private class toNext implements android.widget.AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View v, int i, long id) {
-            MenuItem selected_menu = (MenuItem) menu_list.getItemAtPosition(i);
-            String menu_name = selected_menu.getName();
 
-            Intent intent = new Intent(MenuActivity.this, MenuActivity.class);
-            intent.putExtra("menu", menu_name);
+            selected_menu = (MenuItem) menu_list.getItemAtPosition(i);
+
+            String name = selected_menu.getName();
+            String description = selected_menu.getDescription();
+            Float price = selected_menu.getPrice();
+            String image = selected_menu.getImageurl();
+
+            Intent intent = new Intent(MenuActivity.this, MenuItemActivity.class);
+            intent.putExtra("name", name);
+            intent.putExtra("description", description);
+            intent.putExtra("price", price);
+            intent.putExtra("image", image);
 
             startActivity(intent);
         }
