@@ -1,22 +1,22 @@
 package com.example.menno_000.restaurant;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.InputStream;
+import java.net.URL;
+
 public class MenuItemActivity extends AppCompatActivity {
 
-    MenuItem item;
-    TextView name;
-    TextView description;
-    TextView price;
-    ImageView image;
-
-    String n;
-    String d;
-    Float p;
-    String i;
+    String name;
+    String description;
+    Float price;
+    String image;
 
 
     @Override
@@ -24,24 +24,22 @@ public class MenuItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menuitem);
 
-        n = (String) getIntent().getSerializableExtra("name");
-        d = (String) getIntent().getSerializableExtra("description");
-        p = (Float) getIntent().getSerializableExtra("price");
-        i = (String) getIntent().getSerializableExtra("image");
+        // Get data from previous screen
+        name = (String) getIntent().getSerializableExtra("name");
+        description = (String) getIntent().getSerializableExtra("description");
+        price = (Float) getIntent().getSerializableExtra("price");
+        image = (String) getIntent().getSerializableExtra("image");
 
-        enterData();
+        // Find Views
+        TextView nameView = findViewById(R.id.name);
+        TextView descriptionView = findViewById(R.id.description);
+        TextView priceView = findViewById(R.id.price);
+        ImageView imageView = findViewById(R.id.image);
+
+        // Set data in the Views
+        nameView.setText(name);
+        descriptionView.setText(description);
+        priceView.setText("$" + price + "0");
+        Picasso.get().load(image).into(imageView);
     }
-
-    private void enterData() {
-
-        name = findViewById(R.id.name);
-        description = findViewById(R.id.description);
-        price = findViewById(R.id.price);
-        image = findViewById(R.id.image);
-
-        name.setText(n);
-        description.setText(d);
-        price.setText("$"+p+"0");
-    }
-
 }
